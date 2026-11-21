@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<!-- Die folgende Zeile ersetzt build_share.js durch die Sicherheitsregel (CSP mit Prüfsumme des Skripts unten) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-MxnsReE8ziYNIA+6XRi7M0M+tQYVHw3V7URc85uEEzo='">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0079c2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="HFS-Simulatoren">
+<link rel="manifest" href="start.webmanifest">
+<link rel="apple-touch-icon" href="HFS-Simulator-icon.png">
+<link rel="icon" href="HFS-Simulator-icon.png">
+<title>HFS-Simulatoren teilen</title>
+<style>
+:root{--blau:#00a5fd;--knopf:#0079c2;--gelb:#fdb92b;--text:#1c2430;--grau:#5b6675;--linie:#d5dbe3;--karte:#fff;--grund:#f2f6fa;--hell:#e0f3ff;--ok:#1d8a3a}
+@media (prefers-color-scheme:dark){:root{--text:#e6ebf1;--grau:#a3adba;--linie:#34404f;--karte:#1c2632;--grund:#121a23;--hell:#163247;--ok:#4cc46c}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--grund);color:var(--text);line-height:1.4;
+ padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+main{max-width:960px;margin:0 auto;padding:16px}
+header{background:#fff;border-bottom:3px solid var(--blau)}
+header img{display:block;width:100%;max-width:960px;margin:0 auto;height:auto}
+h1{font-size:1.5rem;margin:18px 0 4px}
+h2{font-size:1.15rem;margin:28px 0 8px}
+p{margin:4px 0 10px}
+.klein{color:var(--grau);font-size:.9rem}
+.kacheln{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:14px}
+.kachel{background:var(--karte);border:1px solid var(--linie);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.kopf{display:flex;gap:14px;align-items:center}
+.kopf img,.kopf .sym{width:64px;height:64px;border-radius:14px;flex:none;background:#fff}
+.kopf .sym{display:flex;align-items:center;justify-content:center;font-size:2rem;border:1px solid var(--linie);background:var(--hell)}
+.kopf h3{margin:0;font-size:1.15rem}
+.kachel .text{flex:1}
+.knopf{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:9px 16px;border-radius:10px;border:0;background:var(--knopf);color:#fff;font-size:1rem;font-weight:600;text-decoration:none;cursor:pointer;font-family:inherit}
+.knopf.gelb{background:var(--gelb);color:#1c2430}
+.knopf.hell{background:transparent;color:var(--knopf);border:1px solid var(--knopf)}
+@media (prefers-color-scheme:dark){.knopf.hell{color:var(--blau);border-color:var(--blau)}}
+.knoepfe{display:flex;gap:8px;flex-wrap:wrap}
+.knoepfe .knopf.hell{flex:1 1 auto;white-space:nowrap;padding:9px 10px;font-size:.95rem}
+.status{font-size:.88rem;color:var(--grau);min-height:1.2em}
+.status.ok{color:var(--ok)}
+.box{background:var(--karte);border:1px solid var(--linie);border-radius:14px;padding:16px}
+label{display:block;margin:10px 0 4px;font-weight:600}
+select,input{font-size:1rem;padding:9px 10px;border:1px solid var(--linie);border-radius:8px;background:var(--karte);color:var(--text);width:100%;max-width:560px;font-family:inherit}
+#eigen{display:none}
+#fehler{color:#c0392b;font-size:.9rem;min-height:1.2em;margin-top:4px}
+#qrbox{display:none;margin:16px 0 4px;text-align:center}
+#qr{display:inline-block;background:#fff;padding:16px;border-radius:12px}
+#qr img,#qr canvas{display:block;width:min(70vw,420px)!important;height:auto!important;image-rendering:pixelated}
+#qrname{font-weight:700;font-size:1.2rem;margin-top:8px}
+#qrlink{word-break:break-all;font-size:.95rem;margin-top:4px}
+.zeile{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+details{background:var(--karte);border:1px solid var(--linie);border-radius:12px;margin:10px 0;padding:0 14px}
+summary{cursor:pointer;font-weight:600;padding:12px 0}
+details[open] summary{border-bottom:1px solid var(--linie);margin-bottom:8px}
+ol,ul{padding-left:22px}li{margin-bottom:6px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1c2430;color:#fff;padding:10px 18px;border-radius:10px;font-size:.95rem;opacity:0;transition:opacity .2s;pointer-events:none;max-width:calc(100% - 32px)}
+#toast.an{opacity:1}
+footer{margin:30px 0 10px;color:var(--grau);font-size:.85rem;text-align:center}
+footer a{color:inherit}
+footer .cc{display:inline-block;margin-top:4px;font-size:.78rem}
+@media print{header,.kacheln,details,.zeile,footer,h1,h2,.klein,#auswahl,#toast,.nicht-drucken{display:none!important}#teilen,#qrbox{display:block!important}.box{border:0;padding:0}body{background:#fff;color:#000}#qr img,#qr canvas{width:120mm!important}}
+</style>
+</head>
+<body>
+<header><img src="titel.jpg" alt="HFS Schaltungssimulator"></header>
+<main>
+<h1>HFS-Simulatoren für Kolleginnen und Kollegen</h1>
+<p class="klein">Hier finden Sie die Simulatoren der Hans-Freudenberg-Schule zum Weitergeben. Sie laufen direkt im Browser, ohne Konto und ohne Installation, auf PC, iPad und Handy. Nach dem ersten Öffnen funktionieren sie auch offline.</p>
+
+<div class="kacheln">
+ <div class="kachel" data-datei="schaltungssimulator.html" data-offline="schaltungssimulator.html HFS-Simulator-icon.png">
+  <div class="kopf"><img src="HFS-Simulator-icon.png" alt=""><div><h3>HFS-Schaltungssimulator</h3><span class="klein">Version 2.6</span></div></div>
+  <div class="text">Stromkreise (LF1), Installationsschaltungen (LF2), Schützsteuerungen (LF3), Elektronik (ab LF5) und Brettaufbau mit Verteiler. Mit Multimeter, Spannungsprüfer, Oszilloskop, Installationstester und Fehlersuche.</div>
+  <a class="knopf gelb" href="schaltungssimulator.html">▶ Öffnen</a>
+  <div class="knoepfe"><button class="knopf hell" data-a="kopie">Link kopieren</button><button class="knopf hell" data-a="qr">QR-Code</button><button class="knopf hell" data-a="teil" hidden>Teilen</button></div>
+  <span class="status"></span>
+ </div>
+ <div class="kachel" data-datei="logo-lab.html" data-offline="logo-lab.html logo-lab-icon.png">
+  <div class="kopf"><img src="logo-lab-icon.png" alt=""><div><h3>HFS LOGO Lab</h3><span class="klein">Version 2</span></div></div>
+  <div class="text">Kleinsteuerungen programmieren und testen: Funktionsplan mit Grund- und Sonderfunktionen, Simulation am Bedienfeld.</div>
+  <a class="knopf gelb" href="logo-lab.html">▶ Öffnen</a>
+  <div class="knoepfe"><button class="knopf hell" data-a="kopie">Link kopieren</button><button class="knopf hell" data-a="qr">QR-Code</button><button class="knopf hell" data-a="teil" hidden>Teilen</button></div>
+  <span class="status"></span>
+ </div>
+ <div class="kachel" data-datei="anleitung-ipad.pdf" data-offline="anleitung-ipad.pdf">
+  <div class="kopf"><span class="sym" aria-hidden="true">📄</span><div><h3>Anleitung iPad</h3><span class="klein">Stand V2.6</span></div></div>
+  <div class="text">Schritt-für-Schritt-Anleitung für Schülerinnen und Schüler: Simulator auf dem iPad öffnen, als App ablegen, Schaltungen speichern.</div>
+  <a class="knopf gelb" href="anleitung-ipad.pdf" target="_blank" rel="noopener">📄 Ansehen</a>
+  <div class="knoepfe"><button class="knopf hell" data-a="kopie">Link kopieren</button><button class="knopf hell" data-a="qr">QR-Code</button><button class="knopf hell" data-a="teil" hidden>Teilen</button></div>
+  <span class="status"></span>
+ </div>
+</div>
+
+<h2 id="teilen-titel">Teilen: QR-Code und Link</h2>
+<section class="box" id="teilen">
+ <div id="auswahl">
+  <label for="ziel">Was soll geteilt werden?</label>
+  <select id="ziel">
+   <option value="">Diese Startseite (alle Simulatoren)</option>
+   <option value="schaltungssimulator.html">HFS-Schaltungssimulator</option>
+   <option value="logo-lab.html">HFS LOGO Lab</option>
+   <option value="anleitung-ipad.pdf">Anleitung iPad</option>
+   <option value="*">Eigene Adresse eingeben …</option>
+  </select>
+  <div id="eigen"><label for="eigenlink">Adresse (beginnt mit https://)</label>
+   <input id="eigenlink" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://…"></div>
+  <div id="fehler"></div>
+  <div class="zeile nicht-drucken">
+   <button class="knopf" id="qrmach">QR-Code zeigen</button>
+   <button class="knopf hell" id="kopie">Link kopieren</button>
+   <button class="knopf hell" id="teil" hidden>Teilen …</button>
+   <button class="knopf hell" id="druck">Drucken</button>
+  </div>
+ </div>
+ <div id="qrbox"><div id="qr"></div><div id="qrname"></div><div id="qrlink"></div>
+  <div class="zeile nicht-drucken" style="justify-content:center"><button class="knopf hell" id="qrbild">QR-Code als Bild speichern</button></div></div>
+</section>
+
+<h2>Hinweise</h2>
+<details><summary>So setzen Sie die Simulatoren im Unterricht ein</summary><ul>
+ <li>QR-Code oben erzeugen und am Beamer zeigen oder ausdrucken. Die Schülerinnen und Schüler scannen ihn mit der Kamera.</li>
+ <li>Oder den Link kopieren und in Moodle, Teams, eine E-Mail oder einen Messenger einfügen.</li>
+ <li>Auf iPad und Handy über <b>Teilen → Zum Home-Bildschirm</b> als App ablegen. Dann starten die Simulatoren ohne Adressleiste und auch offline.</li>
+ <li>Schaltungen speichert jedes Gerät für sich im Browser. Für Abgaben exportieren die Lernenden eine Datei („Abgeben“ im Simulator) und laden sie dort hoch, wo Sie es vorgeben, z. B. in Moodle.</li>
+</ul></details>
+<details><summary>Datenschutz und Sicherheit</summary><ul>
+ <li>Kein Konto, keine Anmeldung, keine Werbung, kein Tracking.</li>
+ <li>Projekte und Einstellungen bleiben auf dem Gerät. Die Seiten schicken keine Daten an einen Server.</li>
+ <li>Jede Seite enthält eine Sicherheitsregel (Content-Security-Policy): Sie lädt nur Dateien von dieser Adresse und sperrt das Senden an fremde Server. Auch der QR-Code wird auf dem Gerät erzeugt.</li>
+ <li>Wie jeder Webserver protokolliert der Anbieter (GitHub) beim Aufruf technisch die IP-Adresse.</li>
+</ul></details>
+<details><summary>Nutzung und Weitergabe (Lizenz)</summary>
+ <p>Die Simulatoren stehen unter <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>: Sie dürfen sie im Unterricht nutzen, weitergeben und anpassen, wenn Sie den Urheber nennen, sie nicht verkaufen und Änderungen unter derselben Lizenz weitergeben.</p>
+ <p>Rückmeldungen und Fehlerhinweise sind willkommen.</p>
+</details>
+
+<footer>Hans-Freudenberg-Schule · <span id="stand">Stand 21.11.2026</span><br><span class="cc">Idee und Design: P. Disson · umgesetzt mit Claude (KI von Anthropic) · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></span></footer>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+function $(id){return document.getElementById(id)}
+var basis=location.href.split('#')[0].split('?')[0].replace(/index\.html$/,'');
+function linkFuer(datei){return basis+(datei||'')}
+var tt=0;function toast(t){var e=$('toast');e.textContent=t;e.className='an';clearTimeout(tt);tt=setTimeout(function(){e.className=''},2200)}
+
+/* Link in die Zwischenablage (mit Ausweichweg für ältere Browser) */
+function kopiere(text){
+ function alt(){var t=document.createElement('textarea');t.value=text;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();
+  var ok=false;try{ok=document.execCommand('copy')}catch(e){}document.body.removeChild(t);ok?toast('✓ Link kopiert'):prompt('Link zum Kopieren:',text)}
+ if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(text).then(function(){toast('✓ Link kopiert')},alt);else alt();
+}
+function teile(titel,text){if(navigator.share)navigator.share({title:titel,url:text}).catch(function(){});else kopiere(text)}
+
+/* Gewähltes Ziel: eigene Adresse nur mit http(s) */
+function ziel(){
+ var v=$('ziel').value;$('fehler').textContent='';
+ if(v!=='*'){var o=$('ziel').selectedOptions[0];return{link:linkFuer(v),name:v?o.textContent:'HFS-Simulatoren'}}
+ var s=$('eigenlink').value.trim(),u=null;
+ try{u=new URL(s)}catch(e){}
+ if(!u||!/^https?:$/.test(u.protocol)){$('fehler').textContent='Bitte eine vollständige Adresse eingeben, die mit https:// beginnt.';return null}
+ return{link:u.href,name:''};
+}
+$('ziel').onchange=function(){$('eigen').style.display=this.value==='*'?'block':'none';$('qrbox').style.display='none';if(this.value==='*')$('eigenlink').focus()};
+$('eigenlink').oninput=function(){$('qrbox').style.display='none'};
+
+/* QR-Code: qrcodejs 1.0.0 liegt neben der Seite (keine Anfrage an fremde Server) */
+function ladeQr(cb){
+ if(window.QRCode)return cb();
+ var s=document.createElement('script');s.src='qrcode.min.js';s.onload=cb;
+ s.onerror=function(){toast('QR-Code-Baustein nicht geladen (offline?)')};document.head.appendChild(s);
+}
+function machQr(cb){
+ var z=ziel();if(!z)return;
+ ladeQr(function(){
+  $('qr').innerHTML='';new QRCode($('qr'),{text:z.link,width:512,height:512,correctLevel:QRCode.CorrectLevel.M});
+  $('qrname').textContent=z.name;$('qrlink').textContent=z.link;$('qrbox').style.display='block';
+  if(cb)setTimeout(cb,300);else $('qrbox').scrollIntoView({behavior:'smooth',block:'center'});
+ });
+}
+$('qrmach').onclick=function(){machQr()};
+$('kopie').onclick=function(){var z=ziel();if(z)kopiere(z.link)};
+if(navigator.share){$('teil').hidden=false;$('teil').onclick=function(){var z=ziel();if(z)teile(z.name||'HFS-Simulatoren',z.link)}}
+$('druck').onclick=function(){machQr(function(){window.print()})};
+$('qrbild').onclick=function(){
+ var c=$('qr').querySelector('canvas'),src=c?c.toDataURL('image/png'):($('qr').querySelector('img')||{}).src;if(!src)return;
+ var a=document.createElement('a');a.href=src;a.download='QR_'+(($('qrname').textContent||'Link').replace(/[^\wäöüÄÖÜß-]+/g,'_'))+'.png';document.body.appendChild(a);a.click();a.remove();
+};
+
+/* Knöpfe in den Kacheln */
+[].forEach.call(document.querySelectorAll('.kachel'),function(k){
+ var d=k.getAttribute('data-datei'),t=k.querySelector('h3').textContent;
+ k.querySelector('[data-a="kopie"]').onclick=function(){kopiere(linkFuer(d))};
+ k.querySelector('[data-a="qr"]').onclick=function(){$('ziel').value=d;$('eigen').style.display='none';machQr()};
+ var s=k.querySelector('[data-a="teil"]');if(navigator.share){s.hidden=false;s.onclick=function(){teile(t,linkFuer(d))}}
+});
+
+/* Offline: Service Worker anmelden und die Simulatoren vorab speichern */
+if(/^https?:$/.test(location.protocol)&&'serviceWorker' in navigator&&window.caches){
+ navigator.serviceWorker.register('HFS-Simulator-sw.js').then(function(){
+  return caches.open('hfs-sim').then(function(c){
+   c.addAll(['./','index.html','titel.jpg','start.webmanifest','version.json','qrcode.min.js']).catch(function(){});
+   [].forEach.call(document.querySelectorAll('.kachel[data-offline]'),function(k){
+    var st=k.querySelector('.status'),f=k.getAttribute('data-offline').split(' ');
+    function zeig(t,ok){st.textContent=t;st.className='status'+(ok?' ok':'')}
+    if(!navigator.onLine){caches.match(f[0],{ignoreSearch:true}).then(function(m){zeig(m?'✓ offline verfügbar':'Erst mit Internet einmal öffnen',!!m)});return}
+    zeig('wird für offline gespeichert …');
+    c.addAll(f).then(function(){zeig('✓ offline verfügbar',true)}).catch(function(){zeig('')});
+   });
+  });
+ }).catch(function(){});
+}
+})();
+</script>
+</body>
+</html>
