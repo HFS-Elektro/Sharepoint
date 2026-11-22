@@ -9,7 +9,7 @@
   "theme_color": "#0079c2",
   "icons": [
     {
-      "src": "HFS-Simulator-icon.png",
+      "src": "start-icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"

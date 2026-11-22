@@ -13,6 +13,8 @@ nach dem ersten Aufruf auch **offline**.
 | **HFS-Schaltungssimulator** | `schaltungssimulator.html` | Gleichstromkreise (LF1), Installationsschaltungen (LF2), Schützsteuerungen (LF3), Elektronik (ab LF5), Brettaufbau mit Verteiler, Messgeräte und Fehlersuche |
 | **HFS LOGO Lab** | `logo-lab.html` | Kleinsteuerung im Stil einer LOGO! programmieren und an einer Anlage testen |
 | **Anleitung iPad** | `anleitung-ipad.pdf` | Anleitung für Schülerinnen und Schüler |
+| **Handbuch Schaltungssimulator** | `handbuch-schaltungssimulator.pdf` | Nutzerhandbuch: Bedienung und alle Funktionen |
+| **Handbuch LOGO Lab** | `handbuch-logo-lab.pdf` | Nutzerhandbuch: FUP-Programm, Bausteine, Simulation, Verdrahtung und Test |
 
 Die Startseite `index.html` zeigt alle Angebote, jeweils mit **Link kopieren**, **QR-Code** und **Teilen**.
 Der QR-Code-Generator unten auf der Seite erzeugt auch Codes für eigene Adressen (z. B. den eigenen Moodle-Kurs)

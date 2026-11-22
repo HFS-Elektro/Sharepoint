@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!-- Die folgende Zeile ersetzt build_share.js durch die Sicherheitsregel (CSP mit Prüfsumme des Skripts unten) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-MxnsReE8ziYNIA+6XRi7M0M+tQYVHw3V7URc85uEEzo='">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-p+i/CtJYueddNr1RpXFQ51jLNmdWceQ91sqaUrHTbGc='">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0079c2">
@@ -11,8 +11,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="HFS-Simulatoren">
 <link rel="manifest" href="start.webmanifest">
-<link rel="apple-touch-icon" href="HFS-Simulator-icon.png">
-<link rel="icon" href="HFS-Simulator-icon.png">
+<link rel="apple-touch-icon" href="start-icon.png">
+<link rel="icon" href="start-icon.png">
 <title>HFS-Simulatoren teilen</title>
 <style>
 :root{--blau:#00a5fd;--knopf:#0079c2;--gelb:#fdb92b;--text:#1c2430;--grau:#5b6675;--linie:#d5dbe3;--karte:#fff;--grund:#f2f6fa;--hell:#e0f3ff;--ok:#1d8a3a}
@@ -67,7 +67,7 @@ footer .cc{display:inline-block;margin-top:4px;font-size:.78rem}
 </style>
 </head>
 <body>
-<header><img src="titel.jpg" alt="HFS Schaltungssimulator"></header>
+<header><img src="titel.jpg" alt="Hans-Freudenberg-Schule Weinheim"></header>
 <main>
 <h1>HFS-Simulatoren für Kolleginnen und Kollegen</h1>
 <p class="klein">Hier finden Sie die Simulatoren der Hans-Freudenberg-Schule zum Weitergeben. Sie laufen direkt im Browser, ohne Konto und ohne Installation, auf PC, iPad und Handy. Nach dem ersten Öffnen funktionieren sie auch offline.</p>
@@ -94,6 +94,20 @@ footer .cc{display:inline-block;margin-top:4px;font-size:.78rem}
   <div class="knoepfe"><button class="knopf hell" data-a="kopie">Link kopieren</button><button class="knopf hell" data-a="qr">QR-Code</button><button class="knopf hell" data-a="teil" hidden>Teilen</button></div>
   <span class="status"></span>
  </div>
+ <div class="kachel" data-datei="handbuch-schaltungssimulator.pdf" data-offline="handbuch-schaltungssimulator.pdf">
+  <div class="kopf"><span class="sym" aria-hidden="true">📄</span><div><h3>Handbuch Schaltungssimulator</h3><span class="klein">Stand V2.6</span></div></div>
+  <div class="text">Nutzerhandbuch für Schülerinnen und Schüler: Bedienung, alle Ansichten von LF1 bis LF5, Brettaufbau, Messgeräte, Werkzeuge, Projekte und Abgabe.</div>
+  <a class="knopf gelb" href="handbuch-schaltungssimulator.pdf" target="_blank" rel="noopener">📄 Ansehen</a>
+  <div class="knoepfe"><button class="knopf hell" data-a="kopie">Link kopieren</button><button class="knopf hell" data-a="qr">QR-Code</button><button class="knopf hell" data-a="teil" hidden>Teilen</button></div>
+  <span class="status"></span>
+ </div>
+ <div class="kachel" data-datei="handbuch-logo-lab.pdf" data-offline="handbuch-logo-lab.pdf">
+  <div class="kopf"><span class="sym" aria-hidden="true">📄</span><div><h3>Handbuch LOGO Lab</h3><span class="klein">Stand V2</span></div></div>
+  <div class="text">Nutzerhandbuch: FUP-Programm erstellen, alle Bausteine, Simulation mit Schulkarussell und Signalverlauf, Verdrahtung und Test der LOGO!.</div>
+  <a class="knopf gelb" href="handbuch-logo-lab.pdf" target="_blank" rel="noopener">📄 Ansehen</a>
+  <div class="knoepfe"><button class="knopf hell" data-a="kopie">Link kopieren</button><button class="knopf hell" data-a="qr">QR-Code</button><button class="knopf hell" data-a="teil" hidden>Teilen</button></div>
+  <span class="status"></span>
+ </div>
 </div>
 
 <h2 id="teilen-titel">Teilen: QR-Code und Link</h2>
@@ -105,6 +119,8 @@ footer .cc{display:inline-block;margin-top:4px;font-size:.78rem}
    <option value="schaltungssimulator.html">HFS-Schaltungssimulator</option>
    <option value="logo-lab.html">HFS LOGO Lab</option>
    <option value="anleitung-ipad.pdf">Anleitung iPad</option>
+   <option value="handbuch-schaltungssimulator.pdf">Handbuch Schaltungssimulator</option>
+   <option value="handbuch-logo-lab.pdf">Handbuch LOGO Lab</option>
    <option value="*">Eigene Adresse eingeben …</option>
   </select>
   <div id="eigen"><label for="eigenlink">Adresse (beginnt mit https://)</label>
@@ -134,12 +150,16 @@ footer .cc{display:inline-block;margin-top:4px;font-size:.78rem}
  <li>Jede Seite enthält eine Sicherheitsregel (Content-Security-Policy): Sie lädt nur Dateien von dieser Adresse und sperrt das Senden an fremde Server. Auch der QR-Code wird auf dem Gerät erzeugt.</li>
  <li>Wie jeder Webserver protokolliert der Anbieter (GitHub) beim Aufruf technisch die IP-Adresse.</li>
 </ul></details>
+<details id="haftung"><summary>Nutzung auf eigene Gefahr – Haftung</summary>
+ <p>Diese Seite ist öffentlich im Internet erreichbar. Auch Fremde können sie aufrufen, und es ist nicht auszuschließen, dass jemand mit böser Absicht versucht, sie zu missbrauchen. Es wurden übliche Schutzmaßnahmen getroffen (siehe oben), einen hundertprozentigen Schutz gibt es im Internet heute aber nicht.</p>
+ <p><b>Die Nutzung erfolgt deshalb auf eigene Gefahr.</b> Die Simulatoren sind ein kostenloses Lernangebot ohne Gewähr für Richtigkeit und Verfügbarkeit. Sie ersetzen keine Fachkraft, keine Norm und keine echte Messung. Für Schäden aus der Nutzung wird keine Haftung übernommen, soweit das gesetzlich zulässig ist. Für Inhalte verlinkter fremder Seiten sind deren Betreiber verantwortlich.</p>
+</details>
 <details><summary>Nutzung und Weitergabe (Lizenz)</summary>
  <p>Die Simulatoren stehen unter <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>: Sie dürfen sie im Unterricht nutzen, weitergeben und anpassen, wenn Sie den Urheber nennen, sie nicht verkaufen und Änderungen unter derselben Lizenz weitergeben.</p>
  <p>Rückmeldungen und Fehlerhinweise sind willkommen.</p>
 </details>
 
-<footer>Hans-Freudenberg-Schule · <span id="stand">Stand 21.11.2026</span><br><span class="cc">Idee und Design: P. Disson · umgesetzt mit Claude (KI von Anthropic) · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></span></footer>
+<footer>Hans-Freudenberg-Schule · <span id="stand">Stand 22.11.2026</span> · <a href="#haftung" id="hzeig">Nutzung auf eigene Gefahr</a><br><span class="cc">Idee und Design: P. Disson · umgesetzt mit Claude (KI von Anthropic) · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></span></footer>
 </main>
 <div id="toast" role="status" aria-live="polite"></div>
 
@@ -170,6 +190,7 @@ function ziel(){
 }
 $('ziel').onchange=function(){$('eigen').style.display=this.value==='*'?'block':'none';$('qrbox').style.display='none';if(this.value==='*')$('eigenlink').focus()};
 $('eigenlink').oninput=function(){$('qrbox').style.display='none'};
+$('hzeig').onclick=function(e){e.preventDefault();var d=$('haftung');d.open=true;d.scrollIntoView({behavior:'smooth'})};
 
 /* QR-Code: qrcodejs 1.0.0 liegt neben der Seite (keine Anfrage an fremde Server) */
 function ladeQr(cb){
@@ -206,7 +227,7 @@ $('qrbild').onclick=function(){
 if(/^https?:$/.test(location.protocol)&&'serviceWorker' in navigator&&window.caches){
  navigator.serviceWorker.register('HFS-Simulator-sw.js').then(function(){
   return caches.open('hfs-sim').then(function(c){
-   c.addAll(['./','index.html','titel.jpg','start.webmanifest','version.json','qrcode.min.js']).catch(function(){});
+   c.addAll(['./','index.html','titel.jpg','start.webmanifest','start-icon.png','version.json','qrcode.min.js']).catch(function(){});
    [].forEach.call(document.querySelectorAll('.kachel[data-offline]'),function(k){
     var st=k.querySelector('.status'),f=k.getAttribute('data-offline').split(' ');
     function zeig(t,ok){st.textContent=t;st.className='status'+(ok?' ok':'')}
